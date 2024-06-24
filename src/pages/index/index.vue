@@ -4,7 +4,7 @@
     <view v-if="error" class="text-area">
       <text class="title">{{ error }}</text>
     </view>
-    <zero-timeline v-else :dataList="history" gap="30px" />
+    <zero-timeline v-else :dataList="history" gap="15px" />
   </view>
 </template>
 

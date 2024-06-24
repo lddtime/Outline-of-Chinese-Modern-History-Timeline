@@ -1,179 +1,165 @@
 <template>
-	<view class="zero-timeline">
-		<view v-for="(item, index) in dataList" :key="index" class="item"
-			:style="{'--color':item.color||'#0396FF','--bgcolor':item.color?item.color+'1a':'#0396FF1a','--gap':gap,'--left':leftWidth}">
-			<view class="left" v-if="showLeft">
-				<view class="time">
-					{{ item.leftTime}}
-				</view>
-				<view class="content">
-					<view class="title">
-						{{ item.leftTitle}}
-					</view>
-					<view class="sub">
-						{{ item.leftContent }}
-					</view>
-				</view>
-			</view>
-			<view class="line">
-				<view class="dot">
-				</view>
-			</view>
-			<view class="right">
-				<view class="time">
-					{{ item.time}}
-				</view>
-				<view class="content">
-					<view class="title">
-						{{ item.title }}
-					</view>
-					<view class="sub">
-						{{ item.content }}
-					</view>
-					<view class="tips">
-						{{ item.sub }}
-					</view>
-				</view>
-			</view>
-		</view>
-	</view>
+  <view class="zero-timeline">
+    <view v-for="(item, index) in dataList" :key="index" class="item"
+      :style="{ '--color': item.color || '#0396FF', '--bgcolor': item.color ? item.color + '1a' : '#0396FF1a', '--gap': gap, '--left': leftWidth }">
+      <view class="left" v-if="showLeft">
+        <view class="title">{{ item.time }}</view>
+        <view class="sub">{{ item.remarks.join('\n') }}</view>
+      </view>
+      <view class="line">
+        <view class="dot"></view>
+      </view>
+      <view class="right">
+        <view class="card">
+          <view class="header">
+            <view class="title">{{ item.title }}</view>
+            <uni-tag v-if="item.tags.includes('单选')" class="tag" text="单选" size="small" type="success" circle />
+            <uni-tag v-if="item.tags.includes('简答')" class="tag" text="简答" size="small" type="warning" circle />
+            <uni-tag v-if="item.tags.includes('论述')" class="tag" text="论述" size="small" type="error" circle />
+          </view>
+          <view class="content">
+            <uni-rate v-if="item.stars" :value="item.stars" size="18" color="LightGray" />
+            <view class="sub">{{ item.content.join('\n') }}</view>
+            <view class="tips">{{ item.sub.join('\n') }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
-	export default {
-		name: "zero-timeline",
-		props: {
-			dataList: {
-				type: Array,
-				default: () => []
-			},
-			showLeft: {
-				type: Boolean,
-				default: true
-			},
-			leftWidth: {
-				type: String,
-				default: '150rpx'
-			},
-			gap: {
-				type: String,
-				default: '20rpx'
-			}
-		},
-		data() {
-			return {
+export default {
+  name: "zero-timeline",
+  props: {
+    dataList: {
+      type: Array,
+      default: () => []
+    },
+    showLeft: {
+      type: Boolean,
+      default: true
+    },
+    leftWidth: {
+      type: String,
+      default: '300rpx'
+    },
+    gap: {
+      type: String,
+      default: '20rpx'
+    }
+  },
+  data() {
+    return {
 
-			}
-		}
-	};
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-	.zero-timeline {
-		position: relative;
-		padding: 10rpx;
-		display: flex;
-		flex-direction: column;
+.zero-timeline {
+  position: relative;
+  padding: 10rpx;
+  display: flex;
+  flex-direction: column;
 
-		.item {
-			display: flex;
-		}
+  .item {
+    display: flex;
+  }
 
-		.left {
-			width: var(--left);
-			overflow: hidden;
-			margin-bottom: var(--gap);
-			text-align: right;
-			white-space: pre-wrap;
-			word-wrap: break-word;
-			word-break: break-all;
-			flex-shrink:0;
-			
-			.time {
-				font-size: 24rpx;
-				color: #333333;
-			}
+  .left {
+    width: var(--left);
+    overflow: hidden;
+    margin-bottom: var(--gap);
+    text-align: right;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    flex-shrink: 0;
 
-			.content {
-				.title {
-					color: var(--color);
-					font-size: 32rpx;
-					font-weight: 500;
-				}
+    .title {
+      color: var(--color);
+      font-size: 32rpx;
+      font-weight: 500;
+    }
 
-				.sub {
-					color: #999999;
-					font-size: 24rpx;
-				}
-			}
-		}
+    .sub {
+      color: #999999;
+      font-size: 24rpx;
+    }
+  }
 
-		.line {
-			margin: 2px 10px 0px 10px;
-			width: 2px;
-			background: #eeeeee;
-			position: relative;
-			flex-shrink:0;
-			flex-grow: 0;
-			.dot {
-				position: absolute;
-				top: 0px;
-				left: 50%;
-				transform: translateX(-50%);
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 8px;
-				height: 8px;
-				background: var(--color);
-				box-shadow: 0 0 3px 1px var(--color);
-				border-radius: 50%;
-			}
-		}
+  .line {
+    margin: 2px 10px 0px 10px;
+    width: 2px;
+    background: #eeeeee;
+    position: relative;
+    flex-shrink: 0;
+    flex-grow: 0;
 
-		.right {
-			flex: 1;
-			margin-bottom: var(--gap);
+    .dot {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 8px;
+      height: 8px;
+      background: var(--color);
+      box-shadow: 0 0 3px 1px var(--color);
+      border-radius: 50%;
+    }
+  }
 
-			.time {
-				font-size: 24rpx;
-				color: #333333;
-			}
+  .right {
+    flex: 1;
+    margin-bottom: var(--gap);
 
-			.content {
-				padding: 20rpx 30rpx;
-				min-height: 50rpx;
-				background: var(--bgcolor);
-				border-radius: 10rpx;
-				white-space: pre-wrap;
-				word-wrap: break-word;
-				word-break: break-all;
+    .card {
+      padding: 20rpx 30rpx;
+      min-height: 50rpx;
+      background: var(--bgcolor);
+      border-radius: 10rpx;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      word-break: break-all;
 
-				.title {
-					font-weight: 600;
-					color: var(--color);
-					font-size: 32rpx;
-					// padding: 5rpx 0;
-				}
+      .header {
+        display: flex;
+        align-items: center;
 
-				.sub {
-					color: #666666;
-					font-size: 28rpx;
-					padding: 5rpx 0;
-				}
+        .title {
+          font-weight: 600;
+          color: var(--color);
+          font-size: 38rpx;
+        }
 
-				.tips {
-					color: #999999;
-					font-size: 24rpx;
-				}
-			}
+        .tag {
+          margin-left: 20rpx;
+        }
+      }
 
-		}
+      .sub {
+        color: #666666;
+        font-size: 30rpx;
+        padding: 5rpx 0;
+      }
 
-		.item:last-child {
-			.line {
-				background: transparent;
-			}
-		}
-	}
+      .tips {
+        color: #999999;
+        font-size: 28rpx;
+      }
+    }
+
+  }
+
+  .item:last-child {
+    .line {
+      background: transparent;
+    }
+  }
+}
 </style>
